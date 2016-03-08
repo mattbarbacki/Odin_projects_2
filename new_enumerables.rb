@@ -76,6 +76,22 @@ module Enumerable
             return self.length
         end
     end
+    
+    def my_map
+        result = []
+        self.my_each_with_index do |el, index|
+            result[index] = yield(el)
+        end
+        return result
+    end
+    
+    def my_inject(memo = nil)
+        result = (memo == nil ? self[0] : memo)
+        self.each do |el|
+            result = yield(result, el)
+        end
+        return result
+    end
 end
 
 #----------------------------------------------------------------------
@@ -168,3 +184,25 @@ def my_count_test
 end
 
 my_count_test
+
+def my_map_test
+    test_array = [1, 2, 3, 4, 5]
+    puts "MY MAP TEST"
+    puts "Test array: #{test_array}"
+    puts "Should multiply all values by 2:"
+    answer = test_array.my_map {|el| el * 2}
+    p answer
+end
+
+my_map_test
+
+def multiply_els
+    puts "MY INJECT TEST"
+    puts "This test multiplies all the elements in an array together."
+    test_array = [1, 2, 3, 4, 5, 6, 7]
+    puts "Should equal 5040:"
+    answer = test_array.my_inject {|prod, el| prod * el}
+    p answer
+end
+
+multiply_els
